@@ -45,8 +45,8 @@
 }
 
 .note-white {
-  height: 80px;
-  width: 40px;
+  height: 160px;
+  width: 80px;
   background: white;
   border: 2px solid #ccc;
   border-radius: 2px;
@@ -54,20 +54,9 @@
   cursor: pointer;
 }
 
-.note-black-wide {
-  height: 40px;
-  width: 62px;
-  background: #ccc;
-  border: 2px solid #ccc;
-  border-radius: 2px;
-  margin: 2px;
-  cursor: pointer;
-  color: white;
-}
-
 .note-black {
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 122px;
   background: #ccc;
   border: 2px solid #ccc;
   border-radius: 2px;
@@ -76,6 +65,17 @@
   color: white;
 }
 
-.note:active {
+.note-black.e,
+.note-black.p {
+  height: 80px;
+  width: 80px;
+}
+
+/* .note:active {
   background: grey;
+} */
+
+.active {
+  background-color: lightcyan;
+  color: #ccc;
 }
