@@ -2,6 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 import './NavBar.css';
 
+
+//look into NavLink on react-puppies-crud app for styling
+
 const NavBar = () => {
   return (
     <div className='NavBar'>
