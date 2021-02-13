@@ -9,15 +9,15 @@ const NavBar = (props) => {
   let nav = props.user ? 
 
   <div>
-    <Link to='' className='NavBar-link'>LOG OUT</Link>
+    <Link to='' className='NavBar-link' onClick={props.handleLogout} >Log Out</Link>
     &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-    <span className='NavBar-welcome'>WELCOME, {props.user.username}</span>
+    <span className='NavBar-welcome'>Welcome, {props.user.username}</span>
   </div>
     :
   <div>
-    <Link to='/login' className='NavBar-link'>LOG IN</Link>
+    <Link to='/login' className='NavBar-link'>Log In</Link>
     &nbsp;&nbsp;|&nbsp;&nbsp;
-    <Link to='/signup' className='NavBar-link'>SIGN UP</Link>
+    <Link to='/signup' className='NavBar-link'>Sign Up</Link>
   </div>;
 
   return (

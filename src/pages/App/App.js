@@ -10,9 +10,14 @@ import { useState } from "react";
 function App() {
   const [user, setUser] = useState(userService.getUser());
 
+  function handleLogout() {
+    userService.logout();
+    setUser(null);
+  }
+
   return (
     <div className="App">
-      <NavBar user={user} />
+      <NavBar user={user} handleLogout={handleLogout} />
       <Switch>
         <Route
           exact
