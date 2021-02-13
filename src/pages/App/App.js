@@ -1,10 +1,12 @@
 import "./App.css";
 import * as Tone from "tone";
 import { useEffect, useState } from "react";
-import { keyToNote } from "./utils/keymaps";
+import { keyToNote } from "../../utils/keymaps";
+import NavBar from "../../components/NavBar/NavBar";
+import { Route } from "react-router-dom";
 
 function App() {
-  const synth = new Tone.PolySynth().toDestination();
+  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
   const [octave, setOctave] = useState(3);
 
@@ -81,7 +83,7 @@ function App() {
     window.addEventListener("keydown", keydownfunc, false);
     window.addEventListener("keyup", upHandler);
     return () => {
-      window.removeEventListener("keydown", keydownfunc);
+      window.removeEventListener("keydown", keydownfunc, false);
       window.removeEventListener("keyup", upHandler);
     };
   }, []);
@@ -153,10 +155,7 @@ function App() {
   }
 
   function toggleActiveStyleBlack(index) {
-    if (
-      appState.blackobjects[index].toggled ||
-      appState.whiteobjects[index].toggled
-    ) {
+    if (appState.blackobjects[index].toggled) {
       return "active";
     } else {
       return "inactive";
@@ -173,7 +172,13 @@ function App() {
 
   return (
     <div className="App">
-      <synth>
+      {/* <Route exact path="/signup" render={() => <SignupPage />} />
+      <Route exact path="/login" render={() => <LoginPage />} />
+      <Route path="/logout" /> */}
+
+      <NavBar />
+
+      <div>
         {/* black keys */}
 
         <div className="note-wrapper">
@@ -192,7 +197,6 @@ function App() {
               }}
               onMouseUp={() => {
                 stopNote(getNote(blackkey.id[0]));
-                toggleActiveBlack(index);
               }}
             >
               {blackkey.id.toUpperCase()}
@@ -211,19 +215,19 @@ function App() {
                 " " +
                 toggleActiveStyleWhite(index)
               }
+              key={index}
               onMouseDown={() => {
-                playNote(getNote(whitekey.id[0]));
+                playNote(getNote(whitekey.id));
               }}
               onMouseUp={() => {
-                stopNote(getNote(whitekey.id[0]));
-                toggleActiveWhite(index);
+                stopNote(getNote(whitekey.id));
               }}
             >
               {whitekey.id.toUpperCase()}
             </button>
           ))}
         </div>
-      </synth>
+      </div>
     </div>
   );
 }
