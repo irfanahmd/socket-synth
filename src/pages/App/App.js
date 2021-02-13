@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
+      <NavBar user={user} />
       <Switch>
         <Route
           exact
