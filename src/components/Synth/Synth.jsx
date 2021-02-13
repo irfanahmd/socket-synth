@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
 import './Synth.css';
 import * as Tone from "tone";
 import { useEffect, useState } from "react";
