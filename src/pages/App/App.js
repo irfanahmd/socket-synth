@@ -15,6 +15,10 @@ function App() {
     setUser(null);
   }
 
+  function handleSignupOrLogin() {
+    setUser(userService.getUser());
+  }
+
   return (
     <div className="App">
       <NavBar user={user} handleLogout={handleLogout} />
@@ -22,9 +26,23 @@ function App() {
         <Route
           exact
           path="/signup"
-          render={({ history }) => <SignupPage history={history} />}
+          render={({ history }) => (
+            <SignupPage
+              history={history}
+              handleSignupOrLogin={handleSignupOrLogin}
+            />
+          )}
         />
-        <Route exact path="/login" render={() => <LoginPage />} />
+        <Route
+          exact
+          path="/login"
+          render={({ history }) => (
+            <LoginPage
+              history={history}
+              handleSignupOrLogin={handleSignupOrLogin}
+            />
+          )}
+        />
         {/* <Route path="/logout" /> */}
         <Synth />
       </Switch>

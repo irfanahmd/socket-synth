@@ -10,7 +10,7 @@ function Synth() {
 
   const [octave, setOctave] = useState(3);
 
-  const [appState, changeState] = useState({
+  const [keyState, setToggle] = useState({
     blackobjects: [
       { id: "q  w", toggled: false },
       { id: "e", toggled: false },
@@ -86,12 +86,12 @@ function Synth() {
       let lowkey = key.toLowerCase();
       synth.triggerAttack(getNote(lowkey));
       if ("asdfghjkl;'".includes(lowkey)) {
-        let whiteindex = appState.whiteobjects.findIndex((i) =>
+        let whiteindex = keyState.whiteobjects.findIndex((i) =>
           i.id.includes(lowkey)
         );
         toggleActiveWhite(whiteindex);
       } else if ("qwertyuiop[".includes(lowkey)) {
-        let blackindex = appState.blackobjects.findIndex((i) =>
+        let blackindex = keyState.blackobjects.findIndex((i) =>
           i.id.includes(lowkey)
         );
         toggleActiveBlack(blackindex);
@@ -105,12 +105,12 @@ function Synth() {
       let lowkey = key.toLowerCase();
       synth.triggerRelease(getNote(lowkey));
       if ("asdfghjkl;'".includes(key)) {
-        let whiteindex = appState.whiteobjects.findIndex((i) =>
+        let whiteindex = keyState.whiteobjects.findIndex((i) =>
           i.id.includes(lowkey)
         );
         toggleActiveWhite(whiteindex);
       } else if ("qwertyuiop[".includes(lowkey)) {
-        let blackindex = appState.blackobjects.findIndex((i) =>
+        let blackindex = keyState.blackobjects.findIndex((i) =>
           i.id.includes(lowkey)
         );
         toggleActiveBlack(blackindex);
@@ -128,24 +128,24 @@ function Synth() {
   }
 
   function toggleActiveBlack(index) {
-    let arrayCopy = [...appState.blackobjects];
+    let arrayCopy = [...keyState.blackobjects];
     arrayCopy[index].toggled
       ? (arrayCopy[index].toggled = false)
       : (arrayCopy[index].toggled = true);
-    changeState({ ...appState, blackobjects: arrayCopy });
+    setToggle({ ...keyState, blackobjects: arrayCopy });
   }
 
   function toggleActiveWhite(index) {
-    let arrayCopy = [...appState.whiteobjects];
+    let arrayCopy = [...keyState.whiteobjects];
     arrayCopy[index].toggled
       ? (arrayCopy[index].toggled = false)
       : (arrayCopy[index].toggled = true);
 
-    changeState({ ...appState, whiteobjects: arrayCopy });
+    setToggle({ ...keyState, whiteobjects: arrayCopy });
   }
 
   function toggleActiveStyleBlack(index) {
-    if (appState.blackobjects[index].toggled) {
+    if (keyState.blackobjects[index].toggled) {
       return "active";
     } else {
       return "inactive";
@@ -153,7 +153,7 @@ function Synth() {
   }
 
   function toggleActiveStyleWhite(index) {
-    if (appState.whiteobjects[index].toggled) {
+    if (keyState.whiteobjects[index].toggled) {
       return "active";
     } else {
       return "inactive";
@@ -165,7 +165,7 @@ function Synth() {
       {/* black keys */}
 
       <div className="note-wrapper">
-        {appState.blackobjects.map((blackkey, index) => (
+        {keyState.blackobjects.map((blackkey, index) => (
           <button
             className={
               "note-black" +
@@ -189,7 +189,7 @@ function Synth() {
 
       {/* white keys */}
       <div className="note-wrapper">
-        {appState.whiteobjects.map((whitekey, index) => (
+        {keyState.whiteobjects.map((whitekey, index) => (
           <button
             className={
               "note-white" +
