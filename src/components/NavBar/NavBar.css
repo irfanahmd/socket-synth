@@ -1,3 +1,9 @@
+@import "~antd/dist/antd.css";
+
+* {
+  font-family: "Inconsolata", monospace;
+}
+
 .NavBar-welcome {
   color: grey;
 }

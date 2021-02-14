@@ -80,8 +80,6 @@ function Synth() {
   }, []);
 
   function downHandler(event) {
-    //when making piano component remove wrapper to see if it works independently
-
       const { key } = event;
       let lowkey = key.toLowerCase();
       synth.triggerAttack(getNote(lowkey));
@@ -104,7 +102,7 @@ function Synth() {
       const { key } = event;
       let lowkey = key.toLowerCase();
       synth.triggerRelease(getNote(lowkey));
-      if ("asdfghjkl;'".includes(key)) {
+      if ("asdfghjkl;'".includes(lowkey)) {
         let whiteindex = keyState.whiteobjects.findIndex((i) =>
           i.id.includes(lowkey)
         );
