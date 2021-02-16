@@ -14,6 +14,8 @@ function Synth() {
   const [role, setRole] = useState('')
   const [playing, setPlaying] = useState('')
 
+  const [octave, setOctave] = useState(3);
+
   useEffect(()=> {
     function playMessage(m) {
       console.log(m)
@@ -33,12 +35,14 @@ function Synth() {
     }
     socket.on('play', playMessage)
     socket.on('stop', stopMessage)
+    
     return () => {
       socket.off('play', playMessage)
+      socket.off('stop', stopMessage)
     }
-  })
+  }, [])
 
-  const [octave, setOctave] = useState(3);
+ 
 
   const [keyState, setToggle] = useState({
     blackobjects: [
@@ -65,6 +69,22 @@ function Synth() {
       { id: "'", toggled: false },
     ],
   });
+
+
+  useEffect(() => {
+    function keydownfunc(evt) {
+      if (!evt.repeat) {
+        downHandler(evt);
+      }
+    }
+
+    window.addEventListener("keydown", keydownfunc, false);
+    window.addEventListener("keyup", upHandler);
+    return () => {
+      window.removeEventListener("keydown", keydownfunc, false);
+      window.removeEventListener("keyup", upHandler);
+    };
+  }, [octave]);
 
   function getNote(key) {
     let lowerString = ["q", "a", "w", "s", "e", "d", "r", "f"];
@@ -93,21 +113,6 @@ function Synth() {
     }
     return;
   }
-
-  useEffect(() => {
-    function keydownfunc(evt) {
-      if (!evt.repeat) {
-        downHandler(evt);
-      }
-    }
-
-    window.addEventListener("keydown", keydownfunc, false);
-    window.addEventListener("keyup", upHandler);
-    return () => {
-      window.removeEventListener("keydown", keydownfunc, false);
-      window.removeEventListener("keyup", upHandler);
-    };
-  }, []);
 
   function downHandler(event) {
       const { key } = event;
@@ -194,6 +199,10 @@ function Synth() {
     }
   }
 
+  function handleOctave() {
+    setOctave(octave + 1)
+  }
+
   return (
     <div>
       {/* black keys */}
@@ -245,6 +254,7 @@ function Synth() {
           </button>
         ))}
       </div>
+      <button onClick={handleOctave}>{octave}</button>
     </div>
   )
 }
