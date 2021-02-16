@@ -4,9 +4,39 @@ import * as Tone from "tone";
 import { useEffect, useState } from "react";
 import { keyToNote } from "../../utils/keymaps";
 
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3000");
 
 function Synth() {
   const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+  const [role, setRole] = useState('')
+  const [playing, setPlaying] = useState('')
+
+  useEffect(()=> {
+    function playMessage(m) {
+      console.log(m)
+      let src = m.path
+      if(m){
+        synth.triggerAttack(src)
+      }
+      setPlaying(m.name)
+    }
+    function stopMessage(m) {
+      console.log(m)
+      let src = m.path
+      if(m){
+        synth.triggerRelease(src)
+      }
+      setPlaying(m.name)
+    }
+    socket.on('play', playMessage)
+    socket.on('stop', stopMessage)
+    return () => {
+      socket.off('play', playMessage)
+    }
+  })
 
   const [octave, setOctave] = useState(3);
 
@@ -82,7 +112,10 @@ function Synth() {
   function downHandler(event) {
       const { key } = event;
       let lowkey = key.toLowerCase();
-      synth.triggerAttack(getNote(lowkey));
+      // synth.triggerAttack(getNote(lowkey));
+      let lowkeyNote = getNote(lowkey)
+      socket.emit('play', {name: 'Test sound 1', path: lowkeyNote, type: 'attack'})
+      
       if ("asdfghjkl;'".includes(lowkey)) {
         let whiteindex = keyState.whiteobjects.findIndex((i) =>
           i.id.includes(lowkey)
@@ -101,7 +134,10 @@ function Synth() {
   function upHandler(event) {
       const { key } = event;
       let lowkey = key.toLowerCase();
-      synth.triggerRelease(getNote(lowkey));
+      // synth.triggerRelease(getNote(lowkey));
+      let lowkeyNote = getNote(lowkey)
+      socket.emit('stop', {name: 'Test sound 1', path: lowkeyNote, type: 'release'})
+
       if ("asdfghjkl;'".includes(lowkey)) {
         let whiteindex = keyState.whiteobjects.findIndex((i) =>
           i.id.includes(lowkey)
@@ -161,6 +197,7 @@ function Synth() {
   return (
     <div>
       {/* black keys */}
+      <button onClick={() => setRole('server')}>Connect</button>
 
       <div className="note-wrapper">
         {keyState.blackobjects.map((blackkey, index) => (

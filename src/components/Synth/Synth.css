@@ -1,3 +1,7 @@
+* {
+  font: SF;
+}
+
 .note-wrapper {
   height: 100%;
   display: flex;
@@ -32,9 +36,11 @@
   width: 80px;
 }
 
-/* .note:active {
-  background: grey;
-} */
+.note-black:active,
+.note-white:active {
+  background-color: lightcyan;
+  color: #ccc;
+}
 
 .active {
   background-color: lightcyan;

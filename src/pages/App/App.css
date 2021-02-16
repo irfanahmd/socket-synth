@@ -1,3 +1,7 @@
+* {
+  font-family: "Inconsolata", monospace;
+}
+
 .App {
   text-align: center;
 }

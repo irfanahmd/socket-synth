@@ -4,6 +4,8 @@ const favicon = require("serve-favicon");
 const logger = require("morgan");
 
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
 require("dotenv").config();
 require("./config/database");
@@ -23,10 +25,21 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  socket.on('play', playMsg => {
+    io.emit('play', playMsg)
+  })
+  socket.on('stop', stopMsg => {
+    io.emit('stop', stopMsg)
+  })
+});
+
 // Configure to use port 3001 instead of 3000 during
 // development to avoid collision with React's dev server
 const port = process.env.PORT || 3001;
 
-app.listen(port, function () {
+server.listen(port, function () {
   console.log(`Express app running on port ${port}`);
 });
