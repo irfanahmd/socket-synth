@@ -1,69 +1,45 @@
 import React from 'react';
 import './Synth.css';
 import * as Tone from "tone";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { keyToNote } from "../../utils/keymaps";
-
-// import useJam from "../../hooks/useJam"
 
 import io from "socket.io-client";
 
-const SOCKET_SERVER_URL = "http://localhost:3000";
+const socket = io.connect("http://localhost:3000");
 
-const Synth = (props) => {
-
+function Synth() {
   const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
+  const [playing, setPlaying] = useState('')
+
   const [octave, setOctave] = useState(4);
 
-
-  const { roomId } = props.match.params
-  const [notes, setNotes] = useState([])
-  const socketRef  = useRef()  
-
   useEffect(()=> {
-
-    //might need to change socket to url
-    socketRef.current = io(SOCKET_SERVER_URL, {
-      query: { roomId }
-    })
-
-    console.log(socketRef.current)
-
-    socketRef.current.on('play', playMessage)
-    socketRef.current.on('stop', stopMessage)
-
-    function playMessage(note) {
-      console.log(note)
-      const incomingNote = {
-        ...note,
-        ownedByCurrentUser: note.senderId === socketRef.current.id
-      }
-
-      let src = note.name
-      if(note){
+    function playMessage(m) {
+      console.log(m)
+      let src = m.path
+      if(m){
         synth.triggerAttack(src)
       }
-      setNotes((notes) => [...notes, incomingNote])
+      setPlaying(m.name)
     }
-
-    function stopMessage(note) {
-      console.log(note)
-      const incomingNote = {
-        ...note,
-        ownedByCurrentUser: note.senderId === socketRef.current.id
-      }
-
-      let src = note.name
-      if(note){
+    function stopMessage(m) {
+      console.log(m)
+      let src = m.path
+      if(m){
         synth.triggerRelease(src)
       }
-      setNotes((notes) => [...notes, incomingNote])
-    } 
+      setPlaying(m.name)
+    }
+    socket.on('play', playMessage)
+    socket.on('stop', stopMessage)
     
     return () => {
-      socketRef.current.disconnect()
+      socket.off('play', playMessage)
+      socket.off('stop', stopMessage)
     }
-  }, [roomId])
+  }, [])
 
  
 
@@ -153,7 +129,7 @@ const Synth = (props) => {
       let lowkeyNote = getNote(lowkey)
 
       if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
-        socketRef.current.emit('play', {name: lowkeyNote, type: 'attack'})
+        socket.emit('play', {name: 'Test sound 1', path: lowkeyNote, type: 'attack'})
       }
       
       if ("asdfghjkl;'".includes(lowkey)) {
@@ -178,7 +154,7 @@ const Synth = (props) => {
       let lowkeyNote = getNote(lowkey)
 
       if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
-        socketRef.current.emit('stop', {name: lowkeyNote, type: 'release'})
+        socket.emit('stop', {name: 'Test sound 1', path: lowkeyNote, type: 'release'})
       }
 
       if ("asdfghjkl;'".includes(lowkey)) {

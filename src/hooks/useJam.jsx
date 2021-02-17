@@ -4,7 +4,7 @@ import socketIOClient from "socket.io-client";
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"; // Name of the event
 const SOCKET_SERVER_URL = "http://localhost:3000";
 
-const useChat = (roomId) => {
+const useJam = (roomId) => {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef();
 
@@ -42,4 +42,4 @@ const useChat = (roomId) => {
 
 }
 
-export default useChat;
+export default useJam;

@@ -5,7 +5,11 @@ const logger = require("morgan");
 
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*"
+  }
+});
 
 require("dotenv").config();
 require("./config/database");
@@ -28,12 +32,18 @@ app.get("/*", function (req, res) {
 io.on("connection", (socket) => {
   console.log("a user connected");
 
+  const {roomId} = socket.handshake.query;
+  socket.join(roomId);
+
   socket.on('play', playMsg => {
-    io.emit('play', playMsg)
+    io.in(roomId).emit('play', playMsg)
   })
   socket.on('stop', stopMsg => {
-    io.emit('stop', stopMsg)
+    io.in(roomId).emit('stop', stopMsg)
   })
+    socket.on("disconnect", () => {
+    socket.leave(roomId);
+  });
 });
 
 // Configure to use port 3001 instead of 3000 during

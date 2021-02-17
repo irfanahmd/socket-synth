@@ -4,7 +4,6 @@ import LoginPage from "../../pages/LoginPage/LoginPage";
 import SignupPage from "../../pages/SignupPage/SignupPage";
 import Synth from "../../components/Synth/Synth";
 import Home from "../../pages/Home/Home";
-import ChatRoom from "../../pages/ChatRoom/ChatRoom";
 import { Route, Switch } from "react-router-dom";
 import userService from "../../utils/userService";
 import { useState } from "react";
@@ -47,7 +46,7 @@ function App() {
           )}
         />
         <Route exact path="/" component={Home} />
-        <Route exact path="/:roomId" component={ChatRoom} />
+        <Route exact path="/:roomId" component={Synth} />
 
         <Synth />
       </Switch>
