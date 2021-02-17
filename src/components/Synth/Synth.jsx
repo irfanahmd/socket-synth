@@ -4,8 +4,6 @@ import * as Tone from "tone";
 import { useEffect, useState, useRef } from "react";
 import { keyToNote } from "../../utils/keymaps";
 
-// import useJam from "../../hooks/useJam"
-
 import io from "socket.io-client";
 
 const SOCKET_SERVER_URL = "http://localhost:3000";
