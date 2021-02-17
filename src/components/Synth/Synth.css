@@ -3,14 +3,13 @@
 }
 
 .note-wrapper {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .note-white {
-  height: 160px;
+  height: 164px;
   width: 80px;
   background: white;
   border: 2px solid #ccc;
@@ -36,8 +35,37 @@
   width: 80px;
 }
 
+.synth-keys {
+  height: 80px;
+  width: 80px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+/* .row {
+  display: flex;
+  justify-content: center;
+  flex: 1 1 80px;
+} */
+
+.col-2 {
+  display: flex;
+  align-self: flex-end;
+}
+
+.col-1 {
+  display: flex;
+  flex-direction: column;
+}
+
 .note-black:active,
 .note-white:active {
+  background-color: lightcyan;
+  color: #ccc;
+}
+
+.synth-keys:active {
   background-color: lightcyan;
   color: #ccc;
 }

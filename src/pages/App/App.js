@@ -4,13 +4,13 @@ import LoginPage from "../../pages/LoginPage/LoginPage";
 import SignupPage from "../../pages/SignupPage/SignupPage";
 import Synth from "../../components/Synth/Synth";
 import Home from "../../pages/Home/Home";
+import ChatRoom from "../../pages/ChatRoom/ChatRoom";
 import { Route, Switch } from "react-router-dom";
 import userService from "../../utils/userService";
 import { useState } from "react";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 function App() {
-
   const [user, setUser] = useState(userService.getUser());
 
   function handleLogout() {
@@ -46,7 +46,9 @@ function App() {
             />
           )}
         />
-        {/* <Route exact path="/" component={Home} /> */}
+        <Route exact path="/" component={Home} />
+        <Route exact path="/:roomId" component={ChatRoom} />
+
         <Synth />
       </Switch>
     </div>

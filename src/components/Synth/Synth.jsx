@@ -11,10 +11,9 @@ const socket = io.connect("http://localhost:3000");
 function Synth() {
   const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-  const [role, setRole] = useState('')
   const [playing, setPlaying] = useState('')
 
-  const [octave, setOctave] = useState(3);
+  const [octave, setOctave] = useState(4);
 
   useEffect(()=> {
     function playMessage(m) {
@@ -116,10 +115,22 @@ function Synth() {
 
   function downHandler(event) {
       const { key } = event;
+
+      if (key === 'ArrowLeft') {
+        handleOctaveDown()
+      }
+
+      if (key === 'ArrowRight') {
+        handleOctaveUp()
+      }
+
       let lowkey = key.toLowerCase();
       // synth.triggerAttack(getNote(lowkey));
       let lowkeyNote = getNote(lowkey)
-      socket.emit('play', {name: 'Test sound 1', path: lowkeyNote, type: 'attack'})
+
+      if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
+        socket.emit('play', {name: 'Test sound 1', path: lowkeyNote, type: 'attack'})
+      }
       
       if ("asdfghjkl;'".includes(lowkey)) {
         let whiteindex = keyState.whiteobjects.findIndex((i) =>
@@ -141,7 +152,10 @@ function Synth() {
       let lowkey = key.toLowerCase();
       // synth.triggerRelease(getNote(lowkey));
       let lowkeyNote = getNote(lowkey)
-      socket.emit('stop', {name: 'Test sound 1', path: lowkeyNote, type: 'release'})
+
+      if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
+        socket.emit('stop', {name: 'Test sound 1', path: lowkeyNote, type: 'release'})
+      }
 
       if ("asdfghjkl;'".includes(lowkey)) {
         let whiteindex = keyState.whiteobjects.findIndex((i) =>
@@ -199,63 +213,85 @@ function Synth() {
     }
   }
 
-  function handleOctave() {
-    setOctave(octave + 1)
+  function handleOctaveUp() {
+    if (octave < 8) {
+      setOctave(octave + 1)
+    }  
   }
 
+  function handleOctaveDown() {
+    if (octave > 0)
+    {setOctave(octave - 1)}
+  }
+
+
   return (
-    <div>
+    <>
+    <div className="row">
       {/* black keys */}
-      <button onClick={() => setRole('server')}>Connect</button>
-
-      <div className="note-wrapper">
-        {keyState.blackobjects.map((blackkey, index) => (
-          <button
-            className={
-              "note-black" +
-              " " +
-              blackkey.id +
-              " " +
-              toggleActiveStyleBlack(index)
-            }
-            key={index}
-            onMouseDown={() => {
-              playNote(getNote(blackkey.id[0]));
-            }}
-            onMouseUp={() => {
-              stopNote(getNote(blackkey.id[0]));
-            }}
-          >
-            {blackkey.id.toUpperCase()}
-          </button>
-        ))}
+      <div className='col-1'>
+        <div className="note-wrapper">
+          {keyState.blackobjects.map((blackkey, index) => (
+            <button
+              className={
+                "note-black" +
+                " " +
+                blackkey.id +
+                " " +
+                toggleActiveStyleBlack(index)
+              }
+              key={index}
+              onMouseDown={() => {
+                playNote(getNote(blackkey.id[0]));
+              }}
+              onMouseUp={() => {
+                stopNote(getNote(blackkey.id[0]));
+              }}
+            >
+              {blackkey.id.toUpperCase()}
+            </button>
+          ))}
+        <div className='note-wrapper'>
+          <button className= "synth-keys">🎹</button>
+          <button className= "synth-keys">🥁</button>
+        </div>
+        </div>
+        {/* white keys */}
+        <div className="note-wrapper">
+          {keyState.whiteobjects.map((whitekey, index) => (
+            <button
+              className={
+                "note-white" +
+                " " +
+                whitekey.id +
+                " " +
+                toggleActiveStyleWhite(index)
+              }
+              key={index}
+              onMouseDown={() => {
+                playNote(getNote(whitekey.id));
+              }}
+              onMouseUp={() => {
+                stopNote(getNote(whitekey.id));
+              }}
+            >
+              {whitekey.id.toUpperCase()}
+            </button>
+          ))}
+          <div className='col-1'>
+            <div className='note-wrapper'>
+              <button className= "synth-keys">ph</button>
+              <button className= "synth-keys">ph</button>
+            </div>
+            <div className='note-wrapper'>
+              <button className= "synth-keys" onClick={handleOctaveDown} disabled={(octave == 0) ? true : false}>＜</button>
+              <button className= "synth-keys" onClick={handleOctaveUp} disabled={(octave == 8) ? true : false}>＞</button>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* white keys */}
-      <div className="note-wrapper">
-        {keyState.whiteobjects.map((whitekey, index) => (
-          <button
-            className={
-              "note-white" +
-              " " +
-              whitekey.id +
-              " " +
-              toggleActiveStyleWhite(index)
-            }
-            key={index}
-            onMouseDown={() => {
-              playNote(getNote(whitekey.id));
-            }}
-            onMouseUp={() => {
-              stopNote(getNote(whitekey.id));
-            }}
-          >
-            {whitekey.id.toUpperCase()}
-          </button>
-        ))}
-      </div>
-      <button onClick={handleOctave}>{octave}</button>
     </div>
+    </>
   )
 }
 
