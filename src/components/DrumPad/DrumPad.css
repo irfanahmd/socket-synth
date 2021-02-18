@@ -1,0 +1,12 @@
+.pad {
+  height: 80px;
+  width: 80px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.pad:active {
+  background-color: lightcyan;
+  color: #ccc;
+}

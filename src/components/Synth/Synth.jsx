@@ -11,16 +11,17 @@ const SOCKET_SERVER_URL = "http://localhost:3000";
 const Synth = (props) => {
 
   const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+
   const [octave, setOctave] = useState(4);
 
 
   const { roomId } = props.match.params
+
   const [notes, setNotes] = useState([])
   const socketRef  = useRef()  
 
   useEffect(()=> {
 
-    //might need to change socket to url
     socketRef.current = io(SOCKET_SERVER_URL, {
       query: { roomId }
     })
@@ -38,9 +39,9 @@ const Synth = (props) => {
       }
 
       let src = note.name
-      if(note){
+      // if(note){
         synth.triggerAttack(src)
-      }
+      // }
       setNotes((notes) => [...notes, incomingNote])
     }
 
@@ -52,9 +53,9 @@ const Synth = (props) => {
       }
 
       let src = note.name
-      if(note){
+      // if(note){
         synth.triggerRelease(src)
-      }
+      // }
       setNotes((notes) => [...notes, incomingNote])
     } 
     
@@ -275,7 +276,7 @@ const Synth = (props) => {
           ))}
         <div className='note-wrapper'>
           <button className= "synth-keys">🎹</button>
-          <button className= "synth-keys">🥁</button>
+          <button className= "synth-keys" onClick={props.toggleInstrument}>🥁</button>
         </div>
         </div>
         {/* white keys */}
