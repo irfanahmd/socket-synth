@@ -38,9 +38,6 @@ io.on("connection", (socket) => {
   socket.on('play', playMsg => {
     io.in(roomId).emit('play', playMsg)
   })
-  socket.on('stop', stopMsg => {
-    io.in(roomId).emit('stop', stopMsg)
-  })
     socket.on("disconnect", () => {
     socket.leave(roomId);
   });

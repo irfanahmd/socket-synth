@@ -35,9 +35,7 @@ const Synth = (props) => {
     ],
   });
 
-
   useEffect(() => {
-    
     function keydownfunc(evt) {
       if (!evt.repeat) {
         downHandler(evt);
@@ -121,7 +119,7 @@ const Synth = (props) => {
       let lowkeyNote = getNote(lowkey)
 
       if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
-        props.socketRef.current.emit('stop', {name: lowkeyNote, type: 'release', instrument: 'synth'})
+        props.socketRef.current.emit('play', {name: lowkeyNote, type: 'release', instrument: 'synth'})
       }
 
       if ("asdfghjkl;'".includes(lowkey)) {
@@ -140,11 +138,11 @@ const Synth = (props) => {
   }
 
   function playNote(note) {
-    props.synth.triggerAttack(`${note}`);
+    props.socketRef.current.emit('play', {name: note, type: 'attack', instrument: 'synth'})
   }
 
   function stopNote(note) {
-    props.synth.triggerRelease(`${note}`);
+    props.socketRef.current.emit('play', {name: note, type: 'release', instrument: 'synth'})
   }
 
   function toggleActiveBlack(index) {
