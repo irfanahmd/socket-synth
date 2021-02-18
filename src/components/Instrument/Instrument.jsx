@@ -8,7 +8,8 @@ import * as Tone from "tone";
 
 import io from "socket.io-client";
 
-const SOCKET_SERVER_URL = "http://localhost:4000";
+// const SOCKET_SERVER_URL = "http://localhost:4000";
+const SOCKET_SERVER_URL = "https://socket-synth.herokuapp.com/";
 
 const Instrument = (props) => {
 
