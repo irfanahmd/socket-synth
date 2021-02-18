@@ -4,67 +4,10 @@ import * as Tone from "tone";
 import { useEffect, useState, useRef } from "react";
 import { keyToNote } from "../../utils/keymaps";
 
-import io from "socket.io-client";
-
-const SOCKET_SERVER_URL = "http://localhost:3000";
 
 const Synth = (props) => {
 
-  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-
   const [octave, setOctave] = useState(4);
-
-
-  const { roomId } = props.match.params
-
-  const [notes, setNotes] = useState([])
-  const socketRef  = useRef()  
-
-  useEffect(()=> {
-
-    socketRef.current = io(SOCKET_SERVER_URL, {
-      query: { roomId }
-    })
-
-    console.log(socketRef.current)
-
-    socketRef.current.on('play', playMessage)
-    socketRef.current.on('stop', stopMessage)
-
-    function playMessage(note) {
-      console.log(note)
-      const incomingNote = {
-        ...note,
-        ownedByCurrentUser: note.senderId === socketRef.current.id
-      }
-
-      let src = note.name
-      // if(note){
-        synth.triggerAttack(src)
-      // }
-      setNotes((notes) => [...notes, incomingNote])
-    }
-
-    function stopMessage(note) {
-      console.log(note)
-      const incomingNote = {
-        ...note,
-        ownedByCurrentUser: note.senderId === socketRef.current.id
-      }
-
-      let src = note.name
-      // if(note){
-        synth.triggerRelease(src)
-      // }
-      setNotes((notes) => [...notes, incomingNote])
-    } 
-    
-    return () => {
-      socketRef.current.disconnect()
-    }
-  }, [roomId])
-
- 
 
   const [keyState, setToggle] = useState({
     blackobjects: [
@@ -94,6 +37,7 @@ const Synth = (props) => {
 
 
   useEffect(() => {
+    
     function keydownfunc(evt) {
       if (!evt.repeat) {
         downHandler(evt);
@@ -152,7 +96,7 @@ const Synth = (props) => {
       let lowkeyNote = getNote(lowkey)
 
       if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
-        socketRef.current.emit('play', {name: lowkeyNote, type: 'attack'})
+        props.socketRef.current.emit('play', {name: lowkeyNote, type: 'attack', instrument: 'synth'})
       }
       
       if ("asdfghjkl;'".includes(lowkey)) {
@@ -177,7 +121,7 @@ const Synth = (props) => {
       let lowkeyNote = getNote(lowkey)
 
       if ("asdfghjkl;'qwertyuiop[".includes(lowkey)){
-        socketRef.current.emit('stop', {name: lowkeyNote, type: 'release'})
+        props.socketRef.current.emit('stop', {name: lowkeyNote, type: 'release', instrument: 'synth'})
       }
 
       if ("asdfghjkl;'".includes(lowkey)) {
@@ -196,11 +140,11 @@ const Synth = (props) => {
   }
 
   function playNote(note) {
-    synth.triggerAttack(`${note}`);
+    props.synth.triggerAttack(`${note}`);
   }
 
   function stopNote(note) {
-    synth.triggerRelease(`${note}`);
+    props.synth.triggerRelease(`${note}`);
   }
 
   function toggleActiveBlack(index) {

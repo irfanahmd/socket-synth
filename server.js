@@ -29,6 +29,8 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
+const PORT = 3001;
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 
@@ -50,6 +52,6 @@ io.on("connection", (socket) => {
 // development to avoid collision with React's dev server
 const port = process.env.PORT || 3001;
 
-server.listen(port, function () {
-  console.log(`Express app running on port ${port}`);
+server.listen(PORT, function () {
+  console.log(`Express app running on port ${PORT}`);
 });

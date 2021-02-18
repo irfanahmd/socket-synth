@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import "./Home.css";
-import Synth from "../../components/Synth/Synth";
+// import Instrument from "../../components/Instrument/Instrument";
 
-import DrumPad from "../../components/DrumPad/DrumPad";
 
 
 const Home = () => {
@@ -24,7 +23,6 @@ const Home = () => {
        <Link to={`/${roomName}`}> 
        <button>Join room</button>
        </Link>
-       <DrumPad />
     </div>
   )
 }
