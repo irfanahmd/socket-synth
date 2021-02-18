@@ -8,7 +8,7 @@ import * as Tone from "tone";
 
 import io from "socket.io-client";
 
-const SOCKET_SERVER_URL = "http://localhost:3001";
+const SOCKET_SERVER_URL = "http://localhost:4000";
 
 const Instrument = (props) => {
 
