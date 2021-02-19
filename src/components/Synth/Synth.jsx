@@ -219,7 +219,7 @@ const Synth = (props) => {
             </button>
           ))}
         <div className='note-wrapper'>
-          <button className= "synth-keys">🎹</button>
+          <button className= "synth-keys" disabled='true'>🎹</button>
           <button className= "synth-keys" onClick={props.toggleInstrument}>🥁</button>
         </div>
         </div>

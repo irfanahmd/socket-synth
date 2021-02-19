@@ -13,10 +13,10 @@ const SOCKET_SERVER_URL = "http://localhost:3000";
 
 const Instrument = (props) => {
 
-  let synth = null;
-  const kick = null;
-  const snare = null;
-  const hihat = null;
+  // let synth = null;
+  // const kick = null;
+  // const snare = null;
+  // const hihat = null;
 
   const activeSynths = {}
   const activeDrums = {}
