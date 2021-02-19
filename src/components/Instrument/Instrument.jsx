@@ -18,9 +18,6 @@ const Instrument = (props) => {
   // const snare = null;
   // const hihat = null;
 
-  const activeSynths = {}
-  const activeDrums = {}
-
   const lowPass = new Tone.Filter({
     frequency: 11000,
   }).toDestination();
@@ -39,6 +36,9 @@ const Instrument = (props) => {
   const socketRef  = useRef() 
 
   useEffect(()=> {
+
+    const activeSynths = {}
+    const activeDrums = {}
 
  
     socketRef.current = io(SOCKET_SERVER_URL, {
@@ -65,6 +65,7 @@ const Instrument = (props) => {
 
       if(note.instrument === 'synth' && note.type ==='release'){
         if(activeSynths[src]) { 
+        console.log(activeSynths)
         activeSynths[src].triggerRelease(src)
         }
         let y = src.split("")[0]

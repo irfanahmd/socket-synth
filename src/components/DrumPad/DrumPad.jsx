@@ -94,11 +94,23 @@ const DrumPad = (props) => {
     }
   }
 
+  function playKick() {
+    props.socketRef.current.emit('play', {name: 'a', type: 'attackrelease', instrument: 'drumpad'})
+  }
+
+  function playSnare() {
+    props.socketRef.current.emit('play', {name: 's', type: 'attackrelease', instrument: 'drumpad'})
+  }
+
+  function playHihat() {
+    props.socketRef.current.emit('play', {name: 't', type: 'attackrelease', instrument: 'drumpad'})
+  }
+
   return (
     <div className= "row">
-      <button className= {"pad" + " " + toggleKick()}>A KICK</button>
-      <button className= {"pad" + " " + toggleSnare()}>S SNARE</button>
-      <button className= {"pad" + " " + toggleHihat()}>T  Y HIHAT</button>
+      <button className= {"pad" + " " + toggleKick()} onMouseDown={() => {playKick()}}>A KICK</button>
+      <button className= {"pad" + " " + toggleSnare()} onMouseDown={() => {playSnare()}}>S SNARE</button>
+      <button className= {"pad" + " " + toggleHihat()} onMouseDown={() => {playHihat()}}>T  Y HIHAT</button>
       <button className= "pad" onClick={props.toggleInstrument}>  🎹
       </button>
       <button className= "synth-keys" disabled='true'>🥁</button>
