@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import "./Home.css";
-// import Instrument from "../../components/Instrument/Instrument";
+import Instrument from "../../components/Instrument/Instrument";
 
 
 
@@ -23,6 +23,7 @@ const Home = () => {
        <Link to={`/${roomName}`}> 
        <button>Join room</button>
        </Link>
+       <Instrument />
     </div>
   )
 }

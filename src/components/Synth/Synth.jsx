@@ -42,6 +42,8 @@ const Synth = (props) => {
       }
     }
 
+    props.changeInOctave(octave)
+
     window.addEventListener("keydown", keydownfunc, false);
     window.addEventListener("keyup", upHandler);
     return () => {
@@ -178,15 +180,26 @@ const Synth = (props) => {
     }
   }
 
-  function handleOctaveUp() {
-    if (octave < 8) {
+  function handleOctaveUp() { 
+    if(props.activeSynths){
+      Object.keys(props.activeSynths).forEach((key) => {
+
+       console.log(key.split("")[0] + (parseInt(key.split("")[1])+1))
+        props.activeSynths[key.split("")[0] + (parseInt(key.split("")[1])+1)] = props.activeSynths[key]
+        
+        delete props.activeSynths[key]
+      })          
+     }
+     if (octave < 8) {
       setOctave(octave + 1)
-    }  
+    } 
   }
 
   function handleOctaveDown() {
     if (octave > 0)
-    {setOctave(octave - 1)}
+    {
+      setOctave(octave - 1)
+    }
   }
 
 

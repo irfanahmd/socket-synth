@@ -35,9 +35,11 @@ io.on("connection", (socket) => {
   const {roomId} = socket.handshake.query;
   socket.join(roomId);
 
+  
   socket.on('play', playMsg => {
     io.in(roomId).emit('play', playMsg)
   })
+  
     socket.on("disconnect", () => {
     socket.leave(roomId);
   });

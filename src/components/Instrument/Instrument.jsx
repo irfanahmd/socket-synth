@@ -13,6 +13,8 @@ const SOCKET_SERVER_URL = "http://localhost:3000";
 
 const Instrument = (props) => {
 
+  const [octave, setOctave] = useState();
+
   let synth = null;
   const kick = null;
   const snare = null;
@@ -21,12 +23,24 @@ const Instrument = (props) => {
   const activeSynths = {}
   const activeDrums = {}
 
+  function changeInOctave(octave) {
+    setOctave(octave)
+  }
+
   const lowPass = new Tone.Filter({
     frequency: 11000,
   }).toDestination();
 
   const [notes, setNotes] = useState([])
-  const { roomId } = props.match.params
+
+  let roomId
+
+  if(props.match){
+    const { roomId } = props.match.params
+  } else {
+    roomId = null
+  }
+  
   const socketRef  = useRef() 
 
   useEffect(()=> {
@@ -50,11 +64,14 @@ const Instrument = (props) => {
       if(note.instrument === 'synth' && note.type ==='attack'){
         if(!activeSynths[src]) {
           activeSynths[src] = new Tone.PolySynth(Tone.Synth).toDestination();
+          console.log(activeSynths)
         }  
         activeSynths[src].triggerAttack(src)
       }
 
       if(note.instrument === 'synth' && note.type ==='release'){
+        console.log(activeSynths)
+
         if(activeSynths[src]) { 
         activeSynths[src].triggerRelease(src)
         }
@@ -124,6 +141,8 @@ const Instrument = (props) => {
       {...props} 
       toggleInstrument={toggleInstrument} 
       socketRef={socketRef}
+      activeSynths={activeSynths}
+      changeInOctave={changeInOctave}
       />}
     </div>
   );
