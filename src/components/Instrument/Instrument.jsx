@@ -13,8 +13,6 @@ const SOCKET_SERVER_URL = "http://localhost:3000";
 
 const Instrument = (props) => {
 
-  const [octave, setOctave] = useState();
-
   let synth = null;
   const kick = null;
   const snare = null;
@@ -23,34 +21,31 @@ const Instrument = (props) => {
   const activeSynths = {}
   const activeDrums = {}
 
-  function changeInOctave(octave) {
-    setOctave(octave)
-  }
-
   const lowPass = new Tone.Filter({
     frequency: 11000,
   }).toDestination();
 
   const [notes, setNotes] = useState([])
 
-  let roomId
+  // let roomId
 
-  if(props.match){
-    const { roomId } = props.match.params
-  } else {
-    roomId = null
-  }
+  // if(props.match){
+  const { roomId } = props.match.params
+  // } 
+  // // else {
+  // //   roomId = null
+  // // }
   
   const socketRef  = useRef() 
 
   useEffect(()=> {
 
+ 
     socketRef.current = io(SOCKET_SERVER_URL, {
       query: { roomId }
     })
 
     socketRef.current.on('play', playMessage)
-
 
     function playMessage(note) {
       console.log(note)
@@ -64,17 +59,20 @@ const Instrument = (props) => {
       if(note.instrument === 'synth' && note.type ==='attack'){
         if(!activeSynths[src]) {
           activeSynths[src] = new Tone.PolySynth(Tone.Synth).toDestination();
-          console.log(activeSynths)
-        }  
+        } 
         activeSynths[src].triggerAttack(src)
       }
 
       if(note.instrument === 'synth' && note.type ==='release'){
-        console.log(activeSynths)
-
         if(activeSynths[src]) { 
         activeSynths[src].triggerRelease(src)
         }
+        let y = src.split("")[0]
+        Object.keys(activeSynths).forEach((key) => {
+          if(key.includes(y)){
+            activeSynths[key].triggerRelease(key)
+          } 
+        })
       }
 
       if(note.instrument === 'drumpad' && note.name.toLowerCase() === 'a'){
@@ -141,8 +139,6 @@ const Instrument = (props) => {
       {...props} 
       toggleInstrument={toggleInstrument} 
       socketRef={socketRef}
-      activeSynths={activeSynths}
-      changeInOctave={changeInOctave}
       />}
     </div>
   );

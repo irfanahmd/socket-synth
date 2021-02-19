@@ -23,7 +23,7 @@ const Home = () => {
        <Link to={`/${roomName}`}> 
        <button>Join room</button>
        </Link>
-       <Instrument />
+       {/* <Instrument /> */}
     </div>
   )
 }
