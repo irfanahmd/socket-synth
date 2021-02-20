@@ -8,10 +8,12 @@ import * as Tone from "tone";
 
 import io from "socket.io-client";
 
-// const SOCKET_SERVER_URL = "http://localhost:3000";
-const SOCKET_SERVER_URL = "https://socket-synth.herokuapp.com/";
+const SOCKET_SERVER_URL = "http://localhost:3000";
+// const SOCKET_SERVER_URL = "https://socket-synth.herokuapp.com/";
 
 const Instrument = (props) => {
+
+  
 
   // let synth = null;
   // const kick = null;
@@ -23,6 +25,13 @@ const Instrument = (props) => {
   }).toDestination();
 
   const [notes, setNotes] = useState([])
+
+
+  const [synthType, setSynthType] = useState('Synth')
+  const [octave, setOctave] = useState(4);
+
+  const [showSynth, setShowSynth] = useState(true);
+  const [showDrumPad, setShowDrumPad] = useState(false);
 
   // let roomId
 
@@ -57,8 +66,11 @@ const Instrument = (props) => {
       let src = note.name
 
       if(note.instrument === 'synth' && note.type ==='attack'){
+
+        
+
         if(!activeSynths[src]) {
-          activeSynths[src] = new Tone.PolySynth(Tone.Synth).toDestination();
+          activeSynths[src] = new Tone.PolySynth(Tone[synthType]).toDestination();
         } 
         activeSynths[src].triggerAttack(src)
       }
@@ -119,12 +131,16 @@ const Instrument = (props) => {
 
     return () => {
       socketRef.current.disconnect()
+      Object.values(activeSynths).forEach((synth) => {
+        synth.dispose()
+      })
+      Object.values(activeDrums).forEach((synth) => {
+        synth.dispose()
+      })
     }
 
-  }, [roomId]);
-  
-  const [showSynth, setShowSynth] = useState(true);
-  const [showDrumPad, setShowDrumPad] = useState(false);
+  }, [roomId, synthType, showDrumPad, showSynth]);
+
 
   function toggleInstrument() {
     setShowSynth(!showSynth);
@@ -140,6 +156,10 @@ const Instrument = (props) => {
       {...props} 
       toggleInstrument={toggleInstrument} 
       socketRef={socketRef}
+      setSynthType={setSynthType}
+      synthType={synthType}
+      octave={octave}
+      setOctave={setOctave}
       />}
     </div>
   );
