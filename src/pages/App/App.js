@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar user={user} handleLogout={handleLogout} />
+      <NavBar user={user} handleLogout={handleLogout} handleSignupOrLogin={handleSignupOrLogin}/>
       <Switch>
         <Route
           exact

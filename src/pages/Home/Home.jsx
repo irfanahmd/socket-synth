@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import Instrument from "../../components/Instrument/Instrument";
 
+import { Input, Button } from 'antd';
 
 
 const Home = () => {
@@ -14,16 +15,19 @@ const Home = () => {
 
   return (
     <div>
-      <input
+    <div className="outerDiv">
+      <div className='enterRoom'>
+      <Input
       type='text'
       placeholder='Enter Room Name'
       value = {roomName}
       onChange={handleRoomNameChange}
        />
        <Link to={`/${roomName}`}> 
-       <button>Join room</button>
+       <Button type='primary' block>Create/Join Room</Button>
        </Link>
-       {/* <Instrument /> */}
+      </div>
+      </div>
     </div>
   )
 }
