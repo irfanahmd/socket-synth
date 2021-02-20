@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import { Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Typography, Button, Modal} from 'antd';
+import { Typography, Button, Modal } from 'antd';
 import { useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";

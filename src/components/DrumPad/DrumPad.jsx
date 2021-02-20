@@ -36,19 +36,21 @@ const DrumPad = (props) => {
 
     console.log(key)
 
-    if (key.toLowerCase() === 'a') {
+    let lowkey = key.toLowerCase()
+
+    if (lowkey === 'a') {
       // kick.triggerAttackRelease('C0','2n'); 
       props.socketRef.current.emit('play', {name: key, type: 'attackrelease', instrument: 'drumpad'})
       setKickActive(true)
     }
 
-    if (key.toLowerCase() === 's') {
+    if (lowkey === 's') {
       // snare.triggerAttackRelease('16n'); 
       props.socketRef.current.emit('play', {name: key, type: 'attackrelease', instrument: 'drumpad'})
       setSnareActive(true)
     }
 
-    if (key.toLowerCase() === 't' || key.toLowerCase() === 'y') {
+    if (lowkey === 't' || lowkey === 'y') {
       // hihat.triggerAttackRelease('32n')
       props.socketRef.current.emit('play', {name: key, type: 'attackrelease', instrument: 'drumpad'})
       setHihatActive(true)
@@ -58,13 +60,16 @@ const DrumPad = (props) => {
   function upHandler(event) {
     
     const { key } = event
-    if (key.toLowerCase() === 'a') {
+
+    let lowkey = key.toLowerCase()
+
+    if (lowkey === 'a') {
       setKickActive(false)
     }
-    if (key.toLowerCase() === 's') {
+    if (lowkey === 's') {
       setSnareActive(false)
     }
-    if (key.toLowerCase() === 't' || key.toLowerCase() === 'y') {
+    if (lowkey === 't' || lowkey === 'y') {
       setHihatActive(false)
     }
 
