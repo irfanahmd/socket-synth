@@ -18,10 +18,6 @@ https://socket-synth.herokuapp.com/
 
 Create a room to get started. You can share the link to the room to play live in real time with others.
 
-## Design
-
-<img width="755" alt="Screen Shot 2021-02-20 at 2 13 05 AM" src="https://user-images.githubusercontent.com/70832125/108587364-2eba2c00-7321-11eb-92cc-30fa5b49e3fe.png">
-
 ## Screenshots
 
 <img width="704" alt="Screen Shot 2021-02-20 at 2 14 22 AM" src="https://user-images.githubusercontent.com/70832125/108587403-5ad5ad00-7321-11eb-88c3-b4ab17efe96f.png">
